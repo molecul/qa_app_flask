@@ -20,4 +20,4 @@ views = Blueprint('views', __name__)
 @views.route('/')
 @login_required
 def index():
-    return render_template("profile.html", username=session['given_name'], name=session['name'], pic=session['picture'])
+    return render_template("profile.html", id=session['id'], username=session['given_name'], name=session['name'], pic=session['picture'])

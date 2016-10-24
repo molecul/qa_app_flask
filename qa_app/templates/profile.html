@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ username }} | Profile</title>
-</head>
-<body>
+{% extends "base.html" %}
 
+{% block content %}
 <div align="center">
     <h3>Hello, {{ name }}!</h3>
 </div>
@@ -17,5 +12,4 @@
 <div align="center">
     <a href="/logout">Logout</a>
 </div>
-</body>
-</html>
+{% endblock %}
