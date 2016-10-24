@@ -14,6 +14,7 @@
 from flask import Flask
 from flask_oauth import OAuth
 from flask_login import LoginManager
+from sqlalchemy_utils import database_exists, create_database
 
 google = None
 
@@ -24,9 +25,20 @@ def create_app(config='settings'):
     app = Flask(__name__)
     with app.app_context():
         app.config.from_object(config)
-
         app.debug = app.config['DEBUG']
         app.secret_key = app.config['SECRET_KEY']
+
+        from qa_app.models import db
+
+        # sqlite database creation is relative to the script which causes issues with serve.py
+        if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']) and not app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
+            create_database(app.config['SQLALCHEMY_DATABASE_URI'])
+
+        db.init_app(app)
+        db.create_all()
+
+        app.db = db
+
         oauth = OAuth()
         global google, lm
         lm.init_app(app)

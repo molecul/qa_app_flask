@@ -11,10 +11,15 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from qa_app import google
+import settings
 
-from flask import current_app as app, Blueprint, session, redirect, url_for
+from qa_app import google
+from qa_app import models
+
+from flask import current_app as app, Blueprint, session, redirect, url_for, request
 from flask_login import login_user, logout_user, login_required, current_user
+
+import json
 
 auth = Blueprint('auth', __name__)
 
@@ -34,7 +39,6 @@ def authorized(resp):
     if access_token is None:
         return redirect(url_for('auth.login'))
 
-    access_token = access_token[0]
     from urllib2 import Request, urlopen, URLError
 
     headers = {'Authorization': 'OAuth '+access_token}
@@ -49,7 +53,7 @@ def authorized(resp):
             return redirect(url_for('auth.login'))
         return res.read()
 
-    info = res.read()
+    info = json.loads(res.read())
 
     for current in info.keys():
         session[current] = info[current]
@@ -58,21 +62,19 @@ def authorized(resp):
         return redirect(url_for('auth.login'))
 
     # ToDO: Implement with DB
-    user = None
 
+    user = models.Users.query.filter_by(email=info['email']).first()
     if user is None:
-        nickname = resp.nickname
-        if nickname is None or nickname == "":
-            nickname = session['email'].split('@')[0]
-
+        uid = info['id']
+        user = models.Users(uid=uid, email=info['email'], role=settings.USER_ROLE['user'])
+        models.db.session.add(user)
+        models.db.session.commit()
     remember_me = False
     if 'remember_me' in session:
         remember_me = session['remember_me']
         session.pop('remember_me', None)
-
     login_user(user, remember=remember_me)
-
-    return redirect(url_for('views.index'))
+    return redirect(request.args.get('next') or url_for('views.index'))
 
 
 @google.tokengetter
