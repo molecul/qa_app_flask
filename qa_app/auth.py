@@ -65,8 +65,8 @@ def authorized(resp):
 
     user = models.Users.query.filter_by(email=info['email']).first()
     if user is None:
-        uid = info['id']
-        user = models.Users(uid=uid, email=info['email'], role=settings.USER_ROLE['user'])
+        uuid = info['id']
+        user = models.Users(uuid=uuid, email=info['email'], role=settings.USER_ROLE['user'])
         models.db.session.add(user)
         models.db.session.commit()
     remember_me = False
