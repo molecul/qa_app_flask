@@ -30,6 +30,48 @@ def login():
 def authorized(resp):
     access_token = resp['access_token']
     session['access_token'] = access_token, ''
+
+    if access_token is None:
+        return redirect(url_for('auth.login'))
+
+    access_token = access_token[0]
+    from urllib2 import Request, urlopen, URLError
+
+    headers = {'Authorization': 'OAuth '+access_token}
+    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
+                  None, headers)
+    try:
+        res = urlopen(req)
+    except URLError, e:
+        if e.code == 401:
+            # Unauthorized - bad token
+            session.pop('access_token', None)
+            return redirect(url_for('auth.login'))
+        return res.read()
+
+    info = res.read()
+
+    for current in info.keys():
+        session[current] = info[current]
+
+    if session['email'] is None or session['email'] == "":
+        return redirect(url_for('auth.login'))
+
+    # ToDO: Implement with DB
+    user = None
+
+    if user is None:
+        nickname = resp.nickname
+        if nickname is None or nickname == "":
+            nickname = session['email'].split('@')[0]
+
+    remember_me = False
+    if 'remember_me' in session:
+        remember_me = session['remember_me']
+        session.pop('remember_me', None)
+
+    login_user(user, remember=remember_me)
+
     return redirect(url_for('views.index'))
 
 

@@ -11,31 +11,18 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from flask import Blueprint, redirect, url_for, session
-
+from flask import Blueprint, redirect, url_for, session, render_template
+from flask_login import current_user, login_required
 
 views = Blueprint('views', __name__)
 
 
 @views.route('/')
 def index():
-    access_token = session.get('access_token')
-    if access_token is None:
-        return redirect(url_for('auth.login'))
+    return render_template("index.html")
 
-    access_token = access_token[0]
-    from urllib2 import Request, urlopen, URLError
 
-    headers = {'Authorization': 'OAuth '+access_token}
-    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
-                  None, headers)
-    try:
-        res = urlopen(req)
-    except URLError, e:
-        if e.code == 401:
-            # Unauthorized - bad token
-            session.pop('access_token', None)
-            return redirect(url_for('auth.login'))
-        return res.read()
-
-    return res.read()
+@views.route('/profile')
+@login_required
+def profile():
+    return render_template("profile.html", username=current_user, name=session['name'], pic=session['picture'])

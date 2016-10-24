@@ -30,7 +30,7 @@ def create_app(config='settings'):
         oauth = OAuth()
         global google, lm
         lm.init_app(app)
-        lm.login_view = 'login'
+        lm.login_view = 'auth.login'
 
         google = oauth.remote_app('google',
                                   base_url='https://www.google.com/accounts/',
