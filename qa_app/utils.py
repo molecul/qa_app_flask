@@ -11,7 +11,10 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from qa_app import create_app
-if __name__ == '__main__':
-    app = create_app()
-    app.run(threaded=True, host="0.0.0.0", port=4000)
+from flask import current_app, g
+from flask_login import current_user
+
+
+@current_app.before_request
+def before_request():
+    g.user = current_user

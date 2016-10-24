@@ -14,6 +14,7 @@
 from qa_app import google
 
 from flask import current_app as app, Blueprint, session, redirect, url_for
+from flask_login import login_user, logout_user, login_required, current_user
 
 auth = Blueprint('auth', __name__)
 
@@ -35,3 +36,9 @@ def authorized(resp):
 @google.tokengetter
 def get_access_token():
     return session.get('access_token')
+
+
+@auth.route('/logout', strict_slashes=False)
+def logout():
+    logout_user()
+    return redirect(url_for('views.index'))

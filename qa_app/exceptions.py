@@ -11,7 +11,15 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from qa_app import create_app
-if __name__ == '__main__':
-    app = create_app()
-    app.run(threaded=True, host="0.0.0.0", port=4000)
+
+from flask import current_app, render_template
+
+
+@current_app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@current_app.errorhandler(Exception)
+def internal_error(e):
+    return render_template('500.html'), 500

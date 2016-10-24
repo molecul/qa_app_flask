@@ -13,8 +13,11 @@
 #    under the License.
 from flask import Flask
 from flask_oauth import OAuth
+from flask_login import LoginManager
 
 google = None
+
+lm = LoginManager()
 
 
 def create_app(config='settings'):
@@ -25,7 +28,10 @@ def create_app(config='settings'):
         app.debug = app.config['DEBUG']
         app.secret_key = app.config['SECRET_KEY']
         oauth = OAuth()
-        global google
+        global google, lm
+        lm.init_app(app)
+        lm.login_view = 'login'
+
         google = oauth.remote_app('google',
                                   base_url='https://www.google.com/accounts/',
                                   authorize_url='https://accounts.google.com/o/oauth2/auth',
@@ -37,6 +43,8 @@ def create_app(config='settings'):
                                   access_token_params={'grant_type': 'authorization_code'},
                                   consumer_key=app.config['GOOGLE_CLIENT_ID'],
                                   consumer_secret=app.config['GOOGLE_CLIENT_SECRET'])
+        from qa_app import utils
+        from qa_app import exceptions
 
         from qa_app.views import views
         from qa_app.auth import auth
