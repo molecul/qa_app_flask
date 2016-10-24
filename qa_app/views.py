@@ -11,18 +11,13 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from flask import Blueprint, redirect, url_for, session, render_template
-from flask_login import current_user, login_required
+from flask import Blueprint, session, render_template
+from flask_login import login_required
 
 views = Blueprint('views', __name__)
 
 
 @views.route('/')
-def index():
-    return render_template("index.html")
-
-
-@views.route('/profile')
 @login_required
-def profile():
-    return render_template("profile.html", username=current_user, name=session['name'], pic=session['picture'])
+def index():
+    return render_template("profile.html", username=session['given_name'], name=session['name'], pic=session['picture'])

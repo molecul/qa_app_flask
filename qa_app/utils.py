@@ -24,4 +24,3 @@ def before_request():
 @lm.user_loader
 def load_user(id):
     return models.Users.query.get(int(id))
-

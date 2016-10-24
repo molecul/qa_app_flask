@@ -61,8 +61,6 @@ def authorized(resp):
     if session['email'] is None or session['email'] == "":
         return redirect(url_for('auth.login'))
 
-    # ToDO: Implement with DB
-
     user = models.Users.query.filter_by(email=info['email']).first()
     if user is None:
         uuid = info['id']
