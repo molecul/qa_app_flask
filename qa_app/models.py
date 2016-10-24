@@ -26,34 +26,29 @@ class Users(db.Model):
     role = db.Column(db.SmallInteger, default=settings.USER_ROLE['user'])
     banned = db.Column(db.Boolean, default=False)
 
+    @property
+    def is_admin(self):
+        if self.email in settings.ADMINS or self.role:
+            return True
+        else:
+            return False
 
-@property
-def is_admin(self):
-    if self.email in settings.ADMINS or self.role:
-        return True
-    else:
-        return False
-
-
-@property
-def is_authenticated(self):
-    return True
-
-
-@property
-def is_active(self):
-    if self.banned:
-        return False
-    else:
+    @property
+    def is_authenticated(self):
         return True
 
+    @property
+    def is_active(self):
+        if self.banned:
+            return False
+        else:
+            return True
 
-def get_id(self):
-    try:
-        return unicode(self.id)  # python 2
-    except NameError:
-        return str(self.id)  # python 3
+    def get_id(self):
+        try:
+            return unicode(self.id)  # python 2
+        except NameError:
+            return str(self.id)  # python 3
 
-
-def __repr__(self):
-    return '<User %r>' % (self.name)
+    def __repr__(self):
+        return '<User %r>' % (self.name)
