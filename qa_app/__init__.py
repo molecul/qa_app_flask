@@ -60,8 +60,10 @@ def create_app(config='settings'):
 
         from qa_app.views import views
         from qa_app.auth import auth
+        from qa_app.scoreboard import scoreboard
 
         app.register_blueprint(views)
         app.register_blueprint(auth)
+        app.register_blueprint(scoreboard)
 
         return app
