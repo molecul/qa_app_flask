@@ -11,6 +11,7 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+from qa_app import models, lm
 from flask import current_app, g
 from flask_login import current_user
 
@@ -18,3 +19,9 @@ from flask_login import current_user
 @current_app.before_request
 def before_request():
     g.user = current_user
+
+
+@lm.user_loader
+def load_user(id):
+    return models.Users.query.get(int(id))
+
