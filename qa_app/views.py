@@ -12,7 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 from flask import Blueprint, session, render_template, request, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from qa_app.models import db, Users, Solves, Awards
 
@@ -21,6 +21,7 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def index():
+    # ToDO: Fix this crutch later!
     username = session.get('given_name', None)
     if username:
         return render_template("base.html", page="Main", username=username)
@@ -33,7 +34,6 @@ def index():
 def profile():
     return render_template("profile.html",
                            page="Profile",
-                           id=session['id'],
                            username=session['given_name'],
                            name=session['name'],
                            pic=session['picture']
@@ -50,7 +50,13 @@ def users(page):
     users = Users.query.slice(page_start, page_end).all()
     count = len(users)
     pages = int(count / results_per_page) + (count % results_per_page > 0)
-    return render_template('users.html', users=users, user_pages=pages, curr_page=page)
+
+    # ToDO: Fix this crutch later!
+    username = session['given_name']
+    if username:
+        return render_template('users.html', users=users, user_pages=pages, curr_page=page, username=username)
+    else:
+        return render_template('users.html', users=users, user_pages=pages, curr_page=page)
 
 
 @views.route('/user/<userid>', methods=['GET', 'POST'])
