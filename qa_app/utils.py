@@ -31,6 +31,12 @@ def before_request():
     g.user = current_user
 
 
+@app.before_request
+def needs_setup():
+    if request.path.startswith('/static'):
+        return
+
+
 @lm.user_loader
 def load_user(id):
     return models.Users.query.get(int(id))
