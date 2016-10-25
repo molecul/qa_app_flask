@@ -21,12 +21,7 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def index():
-    # ToDO: Fix this crutch later!
-    username = session.get('given_name', None)
-    if username:
-        return render_template("base.html", page="Main", username=username)
-    else:
-        return render_template("base.html", page="Main")
+    return render_template("base.html", page="Main")
 
 
 @views.route('/profile')
@@ -50,13 +45,7 @@ def users(page):
     users = Users.query.slice(page_start, page_end).all()
     count = len(users)
     pages = int(count / results_per_page) + (count % results_per_page > 0)
-
-    # ToDO: Fix this crutch later!
-    username = session['given_name']
-    if username:
-        return render_template('users.html', users=users, user_pages=pages, curr_page=page, username=username)
-    else:
-        return render_template('users.html', users=users, user_pages=pages, curr_page=page)
+    return render_template('users.html', users=users, user_pages=pages, curr_page=page)
 
 
 @views.route('/user/<userid>', methods=['GET', 'POST'])
