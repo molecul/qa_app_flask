@@ -49,7 +49,11 @@ def get_standings(admin=False, count=None):
 @scoreboard.route('/scoreboard')
 def scoreboard_view():
     standings = get_standings()
-    return render_template('scoreboard.html', users=standings, username=session.get('given_name', None))
+    username = session.get('given_name', None)
+    if username:
+        return render_template('scoreboard.html', users=standings, page="Scoreboard", username=username)
+    else:
+        return render_template('scoreboard.html', users=standings, page="Scoreboard")
 
 
 @scoreboard.route('/scores')

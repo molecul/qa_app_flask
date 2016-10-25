@@ -19,7 +19,11 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def index():
-    return render_template("base.html", page="Main", username=session.get('given_name', None))
+    username = session.get('given_name', None)
+    if username:
+        return render_template("base.html", page="Main", username=username)
+    else:
+        return render_template("base.html", page="Main")
 
 
 @views.route('/profile')
