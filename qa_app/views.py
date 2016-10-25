@@ -51,7 +51,7 @@ def users(page):
     users = Users.query.slice(page_start, page_end).all()
     count = len(users)
     pages = int(count / results_per_page) + (count % results_per_page > 0)
-    return render_template('users.html', users=users, user_pages=pages, curr_page=page)
+    return render_template('users.html', users=users, user_pages=pages, curr_page=page, page="Users")
 
 
 @views.route('/user/<userid>', methods=['GET', 'POST'])

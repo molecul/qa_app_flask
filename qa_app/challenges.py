@@ -18,5 +18,5 @@ challenges = Blueprint('challenges', __name__)
 
 @challenges.route('/challenges', methods=['GET'])
 def challenges_view():
-    return render_template('chals.html')
+    return render_template('chals.html', page="Challenges")
 
