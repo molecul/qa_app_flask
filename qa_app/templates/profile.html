@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div align="center">
-    <h3>Hello, {{ name }}!</h3>
+<div class="jumbotron home">
+    <div class="container">
+        <h1>Profile</h1>
+    </div>
 </div>
-<br>
-<div align="center">
-    <img src="{{ pic }}">
-</div>
+    <div class="container main-container">
+        <div align="center">
+            <h3>Hello, {{ name }}!</h3>
+        </div>
+        <br>
+        <div align="center">
+            <img src="{{ pic }}">
+        </div>
+    </div>
 {% endblock %}
