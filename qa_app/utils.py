@@ -25,6 +25,7 @@ from flask_login import current_user
 
 import settings
 
+
 @app.before_request
 def before_request():
     g.user = current_user
@@ -84,13 +85,13 @@ def init_utils(app):
     app.jinja_env.filters['unix_time'] = unix_time
     app.jinja_env.filters['unix_time_millis'] = unix_time_millis
     app.jinja_env.filters['long2ip'] = long2ip
+    app.jinja_env.globals.update(template_theme=settings.TEMPLATE)
 
     @app.context_processor
     def inject_user():
         if session:
             return dict(session)
         return dict()
-
 
     @app.before_request
     def csrf():
