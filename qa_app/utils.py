@@ -23,6 +23,7 @@ from qa_app import models, lm
 from flask import current_app as app, g, session, request, abort
 from flask_login import current_user
 
+import settings
 
 @app.before_request
 def before_request():

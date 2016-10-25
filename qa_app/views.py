@@ -11,6 +11,8 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+import settings
+
 from flask import Blueprint, session, render_template, request, jsonify
 from flask_login import login_required, current_user
 
