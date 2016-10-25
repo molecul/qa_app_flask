@@ -1,4 +1,16 @@
-{% extends "base.html" %}
+ {% extends "base.html" %}
+
+{% block stylesheets %}
+    <style>
+    hr {
+        margin-top: 0px;
+        padding-bottom: 10px;
+    }
+    .row {
+        margin-bottom: 10px;
+    }
+    </style>
+{% endblock %}
 
 {% block content %}
 <div class="jumbotron home">
@@ -6,7 +18,7 @@
         <h1>Profile</h1>
     </div>
 </div>
-    <div class="container main-container">
+<div class="container main-container">
         <div align="center">
             <h3>Hello, {{ name }}!</h3>
         </div>
@@ -14,5 +26,9 @@
         <div align="center">
             <img src="{{ pic }}">
         </div>
-    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/style.js"></script>
 {% endblock %}

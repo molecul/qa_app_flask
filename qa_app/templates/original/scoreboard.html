@@ -29,3 +29,9 @@
     </table>
 </div>
 {% endblock %}
+
+{% block scripts %}
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/vendor/plotly.min.js"></script>
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/utils.js"></script>
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/scoreboard.js"></script>
+{% endblock %}

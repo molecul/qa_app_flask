@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block stylesheets %}
+{% endblock %}
+
 {% block content %}
 <div class="jumbotron home">
     <div class="container">
@@ -75,4 +78,10 @@
         </table>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/vendor/plotly.min.js"></script>
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/utils.js"></script>
+    <script src="{{ request.script_root }}/static/{{ settings.TEMPLATE }}/js/user.js"></script>
 {% endblock %}
