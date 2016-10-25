@@ -22,7 +22,7 @@
         </div>
         <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0px">
           <ul class="nav navbar-nav">
-            <!-- <li><a href="{{ request.script_root }}/users">Users</a></li> -->
+            <li><a href="{{ request.script_root }}/users">Users</a></li>
             <li><a href="{{ request.script_root }}/scoreboard">Scoreboard</a></li>
             <!-- <li><a href="{{ request.script_root }}/challenges">Challenges</a></li> -->
           </ul>
@@ -31,7 +31,7 @@
             {% if admin %}
             <!-- <li><a href="{{ request.script_root }}/admin">Admin</a></li> -->
             {% endif %}
-            <!-- <li><a href="{{ request.script_root }}/user/{{ id }}">User</a></li> -->
+            <li><a href="{{ request.script_root }}/user/{{ id }}">User</a></li>
             <li><a href="{{ request.script_root }}/profile">Profile</a></li>
             <li><a href="{{ request.script_root }}/logout">Logout</a></li>
           {% else %}
