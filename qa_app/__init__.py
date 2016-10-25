@@ -11,27 +11,41 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+import os, settings
 from flask import Flask
 from flask_oauth import OAuth
 from flask_login import LoginManager
 from sqlalchemy_utils import database_exists, create_database
+from jinja2 import FileSystemLoader
 
 google = None
 
 lm = LoginManager()
 
 
+class ThemeLoader(FileSystemLoader):
+    def get_source(self, environment, template):
+        theme = settings.TEMPLATE
+        if not theme or len(theme) == 0:
+            theme = "original"
+        template = "/".join([theme, template])
+        return super(ThemeLoader, self).get_source(environment, template)
+
+
 def create_app(config='settings'):
     app = Flask(__name__)
     with app.app_context():
         app.config.from_object(config)
+        app.jinja_loader = ThemeLoader(os.path.join(app.root_path, app.template_folder), followlinks=True)
+
         app.debug = app.config['DEBUG']
         app.secret_key = app.config['SECRET_KEY']
 
         from qa_app.models import db
 
         # sqlite database creation is relative to the script which causes issues with serve.py
-        if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']) and not app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
+        if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']) and not \
+                app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
             create_database(app.config['SQLALCHEMY_DATABASE_URI'])
 
         db.init_app(app)

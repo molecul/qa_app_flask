@@ -34,6 +34,7 @@ SESSION_COOKIE_HTTPONLY = True
 PERMANENT_SESSION_LIFETIME = 604800 # 7 days in seconds
 HOST = "localhost"
 UPLOAD_FOLDER = os.path.normpath('static/uploads')
+TEMPLATE = 'original'
 TEMPLATES_AUTO_RELOAD = True
 TRUSTED_PROXIES = [
     '^127\.0\.0\.1$',

@@ -19,6 +19,12 @@ from qa_app.models import db, Users, Solves, Awards
 views = Blueprint('views', __name__)
 
 
+@views.before_request
+def redirect_setup():
+    if request.path.startswith("/static"):
+        return
+
+
 @views.route('/')
 def index():
     return render_template("base.html", page="Main")
