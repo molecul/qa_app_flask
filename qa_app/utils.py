@@ -106,3 +106,10 @@ def init_utils(app):
         if request.method == "POST":
             if session['nonce'] != request.form.get('nonce'):
                 abort(403)
+
+
+def is_admin():
+    if authed():
+        return settings.USER_ROLE.keys()[settings.USER_ROLE.values().index(session['admin'])]
+    else:
+        return False
