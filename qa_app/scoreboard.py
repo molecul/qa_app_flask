@@ -11,7 +11,7 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from flask import Blueprint, render_template,jsonify
+from flask import Blueprint, render_template,jsonify, session
 from qa_app.utils import unix_time
 from qa_app.models import db, Users, Solves, Awards, Challenges
 
@@ -49,7 +49,7 @@ def get_standings(admin=False, count=None):
 @scoreboard.route('/scoreboard')
 def scoreboard_view():
     standings = get_standings()
-    return render_template('scoreboard.html', users=standings)
+    return render_template('scoreboard.html', users=standings, username=session.get('given_name', None))
 
 
 @scoreboard.route('/scores')
