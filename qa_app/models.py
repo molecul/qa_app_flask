@@ -52,3 +52,25 @@ class Users(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.email.split('@')[0])
+
+
+class Attempts(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    status = db.Column(db.Integer, default=-1)
+    task_name = db.Column(db.String, nullable=False)
+    a_id = db.Column(db.String(32), nullable=False)
+    result = db.Column(db.Text)
+    created = db.Column(db.TIMESTAMP, created=True)
+    updated = db.Column(db.TIMESTAMP, updated=True)
+
+    def __repr__(self):
+        return '<attempts %r>' % self.chal
+
+
+class Solved(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    data = db.Column(db.Integer, db.ForeignKey('attempts.id'))
+
+    def __repr__(self):
+        return '<solved %r>' % self.chal
