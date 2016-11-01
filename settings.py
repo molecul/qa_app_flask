@@ -48,6 +48,7 @@ TRUSTED_PROXIES = [
 # (needs only for first log in, manage by user -> is_admin)
 ADMINS = ['user@domain.com']
 USER_ROLE = {'user': 0, 'admin': 1}
+TRAINING_EXECUTOR_URL = "http://localhost:8000/"
 
 
 ##### AUTH SETTINGS #####

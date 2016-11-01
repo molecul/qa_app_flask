@@ -11,6 +11,7 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+import requests
 from flask import Blueprint, session, render_template
 from flask_login import login_required
 
@@ -21,3 +22,18 @@ views = Blueprint('views', __name__)
 @login_required
 def index():
     return render_template("profile.html", username=session['given_name'], name=session['name'], pic=session['picture'])
+
+
+@views.route('/api/<cmd>')
+@views.route('/api/<cmd>/<val>')
+def training_proxy_get(cmd, val):
+    build_url = "{base_url}"
+    if cmd:
+        build_url = "%s/{cmd}".format(cmd=cmd) % build_url
+        if val:
+            build_url = "%s/{val}".format(val=val) % build_url
+    r = requests.get(build_url)
+    if r.status_code == 200:
+        return r.json()
+    else:
+        return r.content
