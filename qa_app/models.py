@@ -61,8 +61,7 @@ class Attempts(db.Model):
     task_name = db.Column(db.String, nullable=False)
     a_id = db.Column(db.String(32), nullable=False)
     result = db.Column(db.Text)
-    created = db.Column(db.TIMESTAMP, created=True)
-    updated = db.Column(db.TIMESTAMP, updated=True)
+    updated = db.Column(db.TIMESTAMP)
 
     def __repr__(self):
         return '<attempts %r>' % self.chal
