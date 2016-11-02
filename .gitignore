@@ -93,3 +93,4 @@ ENV/
 
 .qa_app_secret_key
 *.db
+.DS_Store

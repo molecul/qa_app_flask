@@ -1,34 +1,60 @@
- {% extends "base.html" %}
-
-{% block stylesheets %}
-    <style>
-    hr {
-        margin-top: 0px;
-        padding-bottom: 10px;
-    }
-    .row {
-        margin-bottom: 10px;
-    }
-    </style>
-{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-<div class="jumbotron home">
-    <div class="container">
-        <h1>Profile</h1>
-    </div>
-</div>
-<div class="container main-container">
-        <div align="center">
-            <h3>Hello, {{ name }}!</h3>
-        </div>
-        <br>
-        <div align="center">
-            <img src="{{ pic }}">
-        </div>
-</div>
-{% endblock %}
 
-{% block scripts %}
-    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/style.js"></script>
+<div class="container-fluid">
+      <div class="row">
+        <div class="main">
+          <h1 class="page-header">Profile</h1>
+
+          <div class="row placeholders">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <img src="http://placehold.it/250" alt="" class="img-rounded img-responsive" />
+                    </div>
+                    <div class="col-sm-6 col-md-8">
+                        <h4>
+                            Alexey Galkin</h4>
+                        <small><cite title="San Francisco, USA">Saratov, Russia <i class="glyphicon glyphicon-map-marker">
+                        </i></cite></small>
+                        <p>
+                            <i class="glyphicon glyphicon-envelope"></i>agalkin@mirantis.com
+                            <br />
+                            <i class="glyphicon glyphicon-gift"></i>June 02, 1988
+                        </p>
+                        <p>
+                            <i class="glyphicon glyphicon-globe"></i>Score: 0
+                            <br>
+                            <i class="glyphicon glyphicon-globe"></i>Place: 1
+                        </p>
+                    </div>
+                </div>
+          </div>
+
+          <h2 class="sub-header">History</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Source</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Find max number</td>
+                  <td>0/3</td>
+                  <td><a href="#">Overview <span class="sr-only">(current)</span></a></td>
+                  <td>2016-11-02T05:38:43.779Z</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+</div>
 {% endblock %}

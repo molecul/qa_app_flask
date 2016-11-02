@@ -1,67 +1,78 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>QA Edu App | {{ page }}</title>
+<html lang="en">
+  <head>
     <meta charset="utf-8">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ request.script_root }}/static/{{ template_theme }}/img/favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Mirantis QA Education Portal">
+    <meta name="author" content="Alexey Galkin">
+      <link rel="shortcut icon" href="{{ request.script_root }}/static/{{ template_theme }}/img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="{{ request.script_root }}/static/{{ template_theme }}/img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="{{ request.script_root }}/static/{{ template_theme }}/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ request.script_root }}/static/{{ template_theme }}/css/vendor/font-awesome/css/font-awesome.min.css" />
-    <link href='{{ request.script_root }}/static/{{ template_theme }}/css/vendor/lato.css' rel='stylesheet' type='text/css'>
-    <link href='{{ request.script_root }}/static/{{ template_theme }}/css/vendor/raleway.css' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{{ request.script_root }}/static/{{ template_theme }}/css/style.css">
-    <link rel="stylesheet" type="text/css" href="{{ request.script_root }}/static/user.css">
-    {% block stylesheets %}{% endblock %}
-    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/vendor/moment.min.js"></script>
-    <script type="text/javascript">
-        var script_root = "{{ request.script_root }}";
-    </script>
 
-</head>
-<body>
-  <div class="body-container">
-    <div class="navbar navbar-inverse home">
+    <link rel="icon" href="{{ request.script_root }}/static/{{ template_theme }}/favicon.ico">
+
+    <title>QA Edu App | {{ page }}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ request.script_root }}/static/{{ template_theme }}/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{{ request.script_root }}/static/{{ template_theme }}/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ request.script_root }}/static/{{ template_theme }}/css/custom-theme.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="{{ request.script_root }}/" class="navbar-brand">QA Edu App</a>
+          <a class="navbar-brand" href="#">QA Edu App</a>
         </div>
-        <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0px">
+        <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{{ request.script_root }}/users">Users</a></li>
-            <li><a href="{{ request.script_root }}/scoreboard">Scoreboard</a></li>
-            <li><a href="{{ request.script_root }}/challenges">Challenges</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
+              <li {% if page.lower()=="home" %} class="active" {% endif %}><a href="{{ request.script_root }}/">Home</a></li>
           {% if username is defined %}
-            {% if admin %}
-            <!-- <li><a href="{{ request.script_root }}/admin">Admin</a></li> -->
-            {% endif %}
-            <li><a href="{{ request.script_root }}/user/{{ current_user.id }}">User</a></li>
-            <li><a href="{{ request.script_root }}/profile">Profile</a></li>
-            <li><a href="{{ request.script_root }}/logout">Logout</a></li>
-          {% else %}
-            <li><a href="{{ request.script_root }}/login">Login</a></li>
+            <li {% if page.lower()=="profile" %} class="active" {% endif %}><a href="{{ request.script_root }}/profile">Profile</a></li>
+            <li {% if page.lower()=="challenges" %} class="active" {% endif %}><a href="{{ request.script_root }}/challenges">Challenges</a></li>
+            <li {% if page.lower()=="scoreboard" %} class="active" {% endif %}><a href="{{ request.script_root }}/scoreboard">Scoreboard</a></li>
           {% endif %}
           </ul>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
-    </div>
+    </nav>
+{% block content %}
+{% endblock %}
 
-    {% block content %}
-    {% endblock %}
-
-  </div>
-  <script src="{{ request.script_root }}/static/{{ template_theme }}/js/vendor/jquery.min.js"></script>
-  <script src="{{ request.script_root }}/static/{{ template_theme }}/js/vendor/marked.min.js"></script>
-  <script src="{{ request.script_root }}/static/{{ template_theme }}/js/vendor/bootstrap.min.js"></script>
-  {% block scripts %}
-  {% endblock %}
-</body>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="static/css/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
 </html>
