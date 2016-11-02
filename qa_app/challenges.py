@@ -28,7 +28,7 @@ def challenges_view():
 @challenges.route('/exercises', methods=['GET'])
 @login_required
 def api_exercises():
-    exercises = requests.get("http://localhost:8000/").json()
+    exercises = requests.get("http://localhost:8000/exercises").json()
     result = {
         "exercises":
             []
