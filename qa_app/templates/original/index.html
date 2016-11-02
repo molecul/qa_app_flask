@@ -5,7 +5,11 @@
 
       <div class="starter-template">
         <h1>Hello</h1>
-        <p class="lead">This is a portal for training and testing skills QA engineers.<br> <a href="{{ request.script_root }}/login">Sing in</a> to continue.</p>
+        <p class="lead">This is a portal for training and testing skills QA engineers.
+            {% if username is not defined %}
+            <br><a href="{{ request.script_root }}/login">Sing in</a> to continue.
+            {% endif %}
+        </p>
       </div>
 
     </div>
