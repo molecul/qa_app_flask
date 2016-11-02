@@ -22,6 +22,7 @@ db = SQLAlchemy()
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(128), unique=True)
+    name = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
     role = db.Column(db.SmallInteger, default=settings.USER_ROLE['user'])
     banned = db.Column(db.Boolean, default=False)
