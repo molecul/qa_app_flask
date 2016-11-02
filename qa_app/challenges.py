@@ -11,7 +11,9 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from flask import Blueprint, render_template
+import requests
+
+from flask import Blueprint, render_template, jsonify
 from flask_login import login_required
 
 challenges = Blueprint('challenges', __name__)
@@ -21,3 +23,21 @@ challenges = Blueprint('challenges', __name__)
 @login_required
 def challenges_view():
     return render_template('challenges.html', page="Challenges")
+
+
+@challenges.route('/exercises', methods=['GET'])
+@login_required
+def api_exercises():
+    exercises = requests.get("http://localhost:8000/").json()
+    result = {
+        "exercises":
+            []
+    }
+    for current in exercises['exercises']:
+        result['exercises'].append({
+            "name": current.get('name', 'unknown'),
+            "category": current.get('answers')[0].split(".")[1],
+            "solved": 0,
+            "cost": 100
+        })
+    return jsonify(result)
