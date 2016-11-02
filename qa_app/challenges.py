@@ -29,12 +29,9 @@ def challenges_view():
 @login_required
 def api_exercises():
     exercises = requests.get("http://localhost:8000/exercises").json()
-    result = {
-        "exercises":
-            []
-    }
+    result = []
     for current in exercises['exercises']:
-        result['exercises'].append({
+        result.append({
             "name": current.get('name', 'unknown'),
             "category": current.get('answers')[0].split(".")[1],
             "solved": 0,
