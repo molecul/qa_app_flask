@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block styles %}
+        <link href="{{ request.script_root }}/static/{{ template_theme }}/css/bootstrap-table.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid">
       <div class="row">
@@ -46,4 +50,8 @@
           </div>
         </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/bootstrap-table.js"></script>
 {% endblock %}

@@ -26,7 +26,8 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ request.script_root }}/static/{{ template_theme }}/css/custom-theme.css" rel="stylesheet">
-
+    {% block styles %}
+    {% endblock %}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
