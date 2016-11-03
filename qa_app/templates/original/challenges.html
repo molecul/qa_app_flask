@@ -43,7 +43,7 @@
         <div class="modal-body">
           <div class="modal-task">
           </div>
-          <
+            <input type="file" title="Send file as solve">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -57,6 +57,7 @@
 
 {% block scripts %}
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/bootstrap-table.js"></script>
+    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/bootstrap.file-input.js"></script>
     <script>
         function typeFormatter(value) {
             switch (value) {
