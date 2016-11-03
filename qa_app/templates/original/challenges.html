@@ -30,7 +30,8 @@
           </div>
           </div>
         </div>
-  <!-- Modal -->
+
+     <!-- Modal -->
   <div class="modal fade" id="taskModal" role="dialog">
     <div class="modal-dialog">
 
@@ -43,10 +44,9 @@
         <div class="modal-body">
           <div class="modal-task">
           </div>
-            <input type="file" title="Send file as solve">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <input id="fileupload" title="Send solve" type="file" name="files[]" data-url="/challenge/" multiple>
         </div>
       </div>
 
@@ -58,6 +58,21 @@
 {% block scripts %}
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/bootstrap-table.js"></script>
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/bootstrap.file-input.js"></script>
+    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/jquery.ui.widget.js"></script>
+    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/jquery.iframe-transport.js"></script>
+    <script src="{{ request.script_root }}/static/{{ template_theme }}/js/jquery.fileupload.js"></script>
+<script>
+$(function () {
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo(document.body);
+            });
+        }
+    });
+});
+</script>
     <script>
         function typeFormatter(value) {
             switch (value) {
@@ -83,5 +98,7 @@
    $(this).find(".modal-task").html(task_message);
    $(this).find(".modal-title").text(task_title);
 });
+   $('input[type=file]').bootstrapFileInput();
+   $('.file-inputs').bootstrapFileInput();
     </script>
 {% endblock %}
