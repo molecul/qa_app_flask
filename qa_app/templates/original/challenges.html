@@ -41,7 +41,9 @@
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-          <p></p>
+          <div class="modal-task">
+          </div>
+          <
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -73,8 +75,12 @@
         }
 
         $("#taskModal").on("show.bs.modal", function(e) {
-    var link = $(e.relatedTarget);
-    $(this).find(".modal-body").text(atob(link.attr("data-field")))
+   var link = $(e.relatedTarget);
+   var task_raw = atob(link.attr("data-field")).split("\n");
+   var task_title = task_raw[0].replace(/#/g, "");
+   var task_message = task_raw.slice(1, task_raw.length-1).join('<br>');
+   $(this).find(".modal-task").html(task_message);
+   $(this).find(".modal-title").text(task_title);
 });
     </script>
 {% endblock %}
