@@ -41,7 +41,7 @@ def api_exercises():
     return jsonify(result)
 
 
-@challenges.route('/challenge/<task>', method=['GET'])
+@challenges.route('/challenge/<task>', methods=['GET'])
 @login_required
 def challenge_view(task):
     return render_template('challenge.html', page=task)
