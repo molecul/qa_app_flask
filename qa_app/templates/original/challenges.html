@@ -19,19 +19,62 @@
                data-show-columns="true">
         <thead>
             <tr>
-              <th data-field="category">Category</th>
+                <th data-field="name">Name</th>
+              <th data-field="category" data-formatter="typeFormatter">Category</th>
               <th data-field="cost">Cost</th>
-              <th data-field="name">Name</th>
               <th data-field="solved">Solved</th>
+                <th data-field="doc" data-formatter="actionFormatter">Action</th>
             </tr>
         </thead>
     </table>
           </div>
           </div>
         </div>
+  <!-- Modal -->
+  <div class="modal fade" id="taskModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/bootstrap-table.js"></script>
+    <script>
+        function typeFormatter(value) {
+            switch (value) {
+                case "sh":
+                    return '<span class="label label-info">bash</span>';
+                    break
+                case "py":
+                    return '<span class="label label-warning">python</span>';
+                    break
+                default:
+                    return '<span class="label label-default">other</span>';
+            }
+        }
+        function actionFormatter(value) {
+            return '<a data-field="'+btoa(value)+'" data-toggle="modal" data-target="#taskModal" title="More"><i class="glyphicon glyphicon-blackboard"></i></a>'
+        }
+
+        $("#taskModal").on("show.bs.modal", function(e) {
+    var link = $(e.relatedTarget);
+    $(this).find(".modal-body").text(atob(link.attr("data-field")))
+});
+    </script>
 {% endblock %}
