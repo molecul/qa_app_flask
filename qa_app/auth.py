@@ -52,6 +52,14 @@ def authorized(resp):
 
     info = req.json()
 
+    if len(info.get("name")) == 0:
+        g_plus_req = requests.get("https://www.googleapis.com/plus/v1/people/me", headers=headers)
+        if g_plus_req.status_code == 200:
+            info['name'] = g_plus_req.json()['displayName']
+        else:
+            session.pop('access_token', None)
+            return redirect(url_for('auth.login'))
+
     for current in info.keys():
         session[current] = info[current]
 
