@@ -54,6 +54,14 @@ class Users(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.email.split('@')[0])
 
+    def score(self):
+        # Fix me
+        return 0
+
+    def place(self):
+        # Fix me
+        return self.id
+
 
 class Attempts(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
