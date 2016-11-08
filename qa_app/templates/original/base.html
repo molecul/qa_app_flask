@@ -56,6 +56,7 @@
             <li {% if page.lower()=="profile" %} class="active" {% endif %}><a href="{{ request.script_root }}/profile">Profile</a></li>
             <li {% if page.lower()=="challenges" %} class="active" {% endif %}><a href="{{ request.script_root }}/challenges">Challenges</a></li>
             <li {% if page.lower()=="scoreboard" %} class="active" {% endif %}><a href="{{ request.script_root }}/scoreboard">Scoreboard</a></li>
+            <li><a href="{{ request.script_root }}/logout">Logout</a></li>
           {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
