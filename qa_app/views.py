@@ -33,6 +33,6 @@ def index():
 @views.route('/profile')
 @login_required
 def profile():
-    user = Users.query(email=session['email']).first()
-    attempts = Attempts.query(user_id=user.id).all()
+    user = Users.query.filter_by(email=session['email']).first()
+    attempts = Attempts.query.filter_by(user_id=user.id).all()
     return render_template("profile.html", page="Profile", user=user, attempts=attempts)
