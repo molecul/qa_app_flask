@@ -11,8 +11,10 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 from flask_login import login_required
+
+from qa_app.models import Users, Attempts
 
 views = Blueprint('views', __name__)
 
@@ -31,4 +33,6 @@ def index():
 @views.route('/profile')
 @login_required
 def profile():
-    return render_template("profile.html", page="Profile")
+    user = Users.query(email=session['email']).first()
+    attempts = Attempts.query(user_id=user.id).all()
+    return render_template("profile.html", page="Profile", user=user, attempts=attempts)

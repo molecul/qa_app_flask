@@ -18,9 +18,9 @@
                             <i class="glyphicon glyphicon-envelope"></i>{{ email }}
                         </p>
                         <p>
-                            <i class="glyphicon glyphicon-globe"></i>Score: 0
+                            <i class="glyphicon glyphicon-globe"></i>Score: {{ user.score() }}
                             <br>
-                            <i class="glyphicon glyphicon-globe"></i>Place: 0
+                            <i class="glyphicon glyphicon-globe"></i>Place: {{ user.place() }}
                         </p>
                     </div>
                 </div>
@@ -32,21 +32,21 @@
               <thead>
                 <tr>
                   <th>Task</th>
-                  <th>Name</th>
                   <th>Status</th>
                   <th>Source</th>
                   <th>Date</th>
                 </tr>
               </thead>
-              <tbody>
+            <tbody>
+            {% for attempt in attempts %}
                 <tr>
-                  <td>1</td>
-                  <td>Find max number</td>
-                  <td>0/3</td>
-                  <td><a href="#">Overview <span class="sr-only">(current)</span></a></td>
-                  <td>2016-11-02T05:38:43.779Z</td>
+                    <td>{{ attempt.task_name }}</td>
+                    <td>{{ attempt.status }}</td>
+                    <td>{{ attempt.source() }}</td>
+                    <td>{{ attempt.updated }}</td>
                 </tr>
-              </tbody>
+            {% endfor %}
+            </tbody>
             </table>
           </div>
         </div>

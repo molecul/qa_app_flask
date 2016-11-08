@@ -75,6 +75,10 @@ class Attempts(db.Model):
     def __repr__(self):
         return '<attempts %r>' % self.chal
 
+    def source(self):
+        # Fix me
+        return "N/A"
+
 
 class Solved(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
