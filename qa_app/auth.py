@@ -13,13 +13,14 @@
 #    under the License.
 import settings
 
+import requests
+
 from qa_app import google
 from qa_app import models
 
 from flask import current_app as app, Blueprint, session, redirect, url_for, request
 from flask_login import login_user, logout_user, login_required, current_user
 
-import json
 
 auth = Blueprint('auth', __name__)
 
@@ -39,21 +40,17 @@ def authorized(resp):
     if access_token is None:
         return redirect(url_for('auth.login'))
 
-    from urllib2 import Request, urlopen, URLError
-
     headers = {'Authorization': 'OAuth '+access_token}
-    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
-                  None, headers)
-    try:
-        res = urlopen(req)
-    except URLError, e:
-        if e.code == 401:
-            # Unauthorized - bad token
-            session.pop('access_token', None)
-            return redirect(url_for('auth.login'))
-        return res.read()
 
-    info = json.loads(res.read())
+    req = requests.get("https://www.googleapis.com/oauth2/v1/userinfo",
+                       headers=headers, allow_redirects=False
+                       )
+    if req.status_code == 401:
+        # Unauthorized - bad token
+        session.pop('access_token', None)
+        return redirect(url_for('auth.login'))
+
+    info = req.json()
 
     for current in info.keys():
         session[current] = info[current]
