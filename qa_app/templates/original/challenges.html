@@ -1,57 +1,52 @@
 {% extends "base.html" %}
 
 {% block styles %}
-        <link href="{{ request.script_root }}/static/{{ template_theme }}/css/bootstrap-table.css" rel="stylesheet">
+    <link href="{{ request.script_root }}/static/{{ template_theme }}/css/bootstrap-table.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-      <div class="row">
+    <div class="row">
         <div class="main">
-          <h1 class="page-header">Challenges</h1>
-
-<div class="table-responsive">
-    <table data-toggle="table"
-               data-url="{{ request.script_root }}/exercises"
-               data-search="true"
-               data-show-refresh="true"
-               data-show-toggle="true"
-               data-show-columns="true">
-        <thead>
-            <tr>
-                <th data-field="name">Name</th>
-              <th data-field="category" data-formatter="typeFormatter">Category</th>
-              <th data-field="cost">Cost</th>
-              <th data-field="solved">Solved</th>
-                <th data-field="doc" data-formatter="actionFormatter">Action</th>
-            </tr>
-        </thead>
-    </table>
-          </div>
-          </div>
+            <h1 class="page-header">Challenges</h1>
+            <div class="table-responsive">
+                <table data-toggle="table"
+                       data-url="{{ request.script_root }}/exercises"
+                       data-search="true"
+                       data-show-refresh="true"
+                       data-show-toggle="true"
+                       data-show-columns="true">
+                    <thead>
+                        <tr>
+                            <th data-field="name">Name</th>
+                            <th data-field="category" data-formatter="typeFormatter">Category</th>
+                            <th data-field="cost">Cost</th>
+                            <th data-field="solved">Solved</th>
+                            <th data-field="doc" data-formatter="actionFormatter">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-
-     <!-- Modal -->
-  <div class="modal fade" id="taskModal" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"></h4>
-        </div>
-        <div class="modal-body">
-          <div class="modal-task">
-          </div>
-        </div>
-        <div class="modal-footer">
-         <input id="fileupload" title="Send solve" type="file" name="files[]" data-url="/challenge/" multiple>
-        </div>
-      </div>
-
     </div>
-  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="taskModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-task"></div>
+            </div>
+            <div class="modal-footer">
+                <input id="file-upload" title="Send solve" type="file" name="files[]" multiple>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
@@ -61,44 +56,45 @@
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/jquery.ui.widget.js"></script>
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/jquery.iframe-transport.js"></script>
     <script src="{{ request.script_root }}/static/{{ template_theme }}/js/jquery.fileupload.js"></script>
-<script>
+    <script>
+function getTaskByName(taskname) {
+    return $(".table-responsive table").
+                bootstrapTable('getData').
+                find(function(task) {return task.name === taskname;});
+}
+
+function typeFormatter(value) {
+    switch (value) {
+        case "sh":
+            return '<span class="label label-info">bash</span>';
+            break
+        case "py":
+            return '<span class="label label-warning">python</span>';
+            break
+        default:
+            return '<span class="label label-default">other</span>';
+    }
+}
+
+function actionFormatter(value, row) {
+    return '<a data-field="' + row.name + '" data-toggle="modal" data-target="#taskModal" title="More"><i class="glyphicon glyphicon-blackboard"></i></a>'
+}
+
 $(function () {
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
-            });
-        }
+    $('#file-upload').fileupload({dataType: 'json'});
+
+    $("#taskModal").on("show.bs.modal", function(e) {
+        var task = getTaskByName($(e.relatedTarget).attr("data-field"));
+        var doc_raw = task.doc.split("\n");
+        var doc_title = doc_raw[0].replace(/#/g, "");
+        var doc_message = doc_raw.slice(1, doc_raw.length-1).join('<br>');
+        $(this).find(".modal-title").text(doc_title);
+        $(this).find(".modal-task").html(doc_message);
+        $('#file-upload').fileupload('option', 'url',
+            "/solution/" + task.name + "/");
     });
 });
-</script>
-    <script>
-        function typeFormatter(value) {
-            switch (value) {
-                case "sh":
-                    return '<span class="label label-info">bash</span>';
-                    break
-                case "py":
-                    return '<span class="label label-warning">python</span>';
-                    break
-                default:
-                    return '<span class="label label-default">other</span>';
-            }
-        }
-        function actionFormatter(value) {
-            return '<a data-field="'+btoa(value)+'" data-toggle="modal" data-target="#taskModal" title="More"><i class="glyphicon glyphicon-blackboard"></i></a>'
-        }
 
-        $("#taskModal").on("show.bs.modal", function(e) {
-   var link = $(e.relatedTarget);
-   var task_raw = atob(link.attr("data-field")).split("\n");
-   var task_title = task_raw[0].replace(/#/g, "");
-   var task_message = task_raw.slice(1, task_raw.length-1).join('<br>');
-   $(this).find(".modal-task").html(task_message);
-   $(this).find(".modal-title").text(task_title);
-});
-   $('input[type=file]').bootstrapFileInput();
-   $('.file-inputs').bootstrapFileInput();
+$('#file-upload').bootstrapFileInput();
     </script>
 {% endblock %}
