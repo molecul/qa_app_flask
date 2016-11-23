@@ -13,7 +13,7 @@
 #    under the License.
 import requests
 
-from flask import Blueprint, render_template, jsonify, abort
+from flask import Blueprint, render_template, jsonify, abort, request
 from flask_login import login_required
 
 challenges = Blueprint('challenges', __name__)
@@ -41,17 +41,10 @@ def api_exercises():
     return jsonify(result)
 
 
-@challenges.route('/challenge/<task>', methods=['GET'])
+@challenges.route('/solution/<task>/', methods=['POST'])
 @login_required
-def challenge_view(task):
-    return render_template('challenge.html', page=task)
-
-
-@challenges.route('/exercise/<task>', methods=['GET'])
-@login_required
-def api_exercise(task):
-    exercises = requests.get("http://localhost:8000/exercises").json()
-    for current in exercises['exercises']:
-        if current.get('name', None) == task:
-            return jsonify(current)
-    return abort(404)
+def api_solution(task):
+    from pprint import pprint
+    pprint(task)
+    pprint(request.files)
+    return jsonify(request.files)
