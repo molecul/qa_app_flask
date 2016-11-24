@@ -81,7 +81,9 @@ function actionFormatter(value, row) {
 }
 
 $(function () {
-    $('#file-upload').fileupload({dataType: 'json'});
+    $('#file-upload').fileupload({
+        dataType: 'json',
+        xhrFields: { withCredentials: true }});
 
     $("#taskModal").on("show.bs.modal", function(e) {
         var task = getTaskByName($(e.relatedTarget).attr("data-field"));

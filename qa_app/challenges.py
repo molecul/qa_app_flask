@@ -13,8 +13,11 @@
 #    under the License.
 import requests
 
-from flask import Blueprint, render_template, jsonify, abort, request
-from flask_login import login_required
+from flask import Blueprint, render_template, jsonify, abort, request, session
+from flask_login import login_required, current_user
+
+from qa_app.models import Users, Attempts
+from qa_app import models
 
 challenges = Blueprint('challenges', __name__)
 
@@ -45,6 +48,25 @@ def api_exercises():
 @login_required
 def api_solution(task):
     from pprint import pprint
-    pprint(task)
-    pprint(request.files)
-    return jsonify(request.files)
+
+    exercises =\
+        requests.get("http://localhost:8000/exercises").json()['exercises']
+    exercise = next((ex for ex in exercises if ex['name'] == task))
+    print(task)
+    pprint(exercise)
+    if exercise is None:
+        return abort(404)
+    if 'files[]' not in request.files:
+        return abort(400)
+
+    solution = request.files['files[]'].stream.read()
+    answer = exercise['answers'][0]  # TODO: handle multiply answers?
+    link = "http://localhost:8000/exercises/{0}".format(task)
+    job_id = requests.post(link, json={answer: solution}).json()['id']
+    user_id = Users.query.filter_by(email=session['email']).first().id
+
+    attempt = Attempts(user_id=user_id, task_name=task, a_id=job_id)
+    models.db.session.add(attempt)
+    models.db.session.commit()
+
+    return jsonify(user_id)
